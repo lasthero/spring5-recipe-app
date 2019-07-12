@@ -3,8 +3,6 @@ package guru.springframework.controllers;
 import guru.springframework.domain.Category;
 import guru.springframework.domain.UnitOfMeasure;
 import java.util.Optional;
-import jdk.nashorn.internal.runtime.regexp.joni.encoding.ObjPtr;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import guru.springframework.repositories.CategoryRepository;
