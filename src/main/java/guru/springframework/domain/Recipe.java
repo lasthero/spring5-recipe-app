@@ -19,9 +19,11 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
+    @Column( length = 100000 )
     private String directions;
-    //todo add
-    //private Difficulty difficulty;
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients;

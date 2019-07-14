@@ -16,6 +16,7 @@ public class Notes {
     private Recipe recipe;
 
     @Lob
+    @Column( length = 100000 )
     private String recipeNotes;
 
     public Long getId() {
