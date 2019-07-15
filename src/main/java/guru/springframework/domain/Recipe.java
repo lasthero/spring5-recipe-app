@@ -2,6 +2,8 @@ package guru.springframework.domain;
 
 import javax.persistence.*;
 import java.util.Set;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  * Created by jt on 6/13/17.
@@ -106,8 +108,12 @@ public class Recipe {
         this.directions = directions;
     }
 
-    public Byte[] getImage() {
-        return image;
+    public byte[] getImage() {
+        return ArrayUtils.toPrimitive(this.image);
+    }
+
+    public String getBase64Image() {
+        return Base64.encodeBase64String(this.getImage());
     }
 
     public void setImage(Byte[] image) {

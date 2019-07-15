@@ -6,5 +6,44 @@
 </head>
 <body>
 <h1>My Recipes!</h1>
+<table>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Categories</th>
+        <th>Difficulty</th>
+        <th>Ingredients</th>
+        <th>Prep Time</th>
+        <th>Cook Time</th>
+        <th>Directions</th>
+        <th>Notes</th>
+    </tr>
+    <tr th:each="recipe : ${recipes}">
+        <td>
+            <img th:src="@{'data:image/jpeg;base64,'+${recipe.getBase64Image()}}" width="150px" height="150px">
+        </td>
+        <td th:text="${recipe.getDescription()}">Name</td>
+        <td th:each="category : ${recipe.getCategories()}">
+            <div th:text="${category.getDescription()}"></div>
+        </td>
+        <td th:text="${recipe.getDifficulty()}"></td>
+        <td>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                </tr>
+                <tr th:each="ingredient : ${recipe.getIngredients()}">
+                    <td th:text="${ingredient.getDescription()}"></td>
+                    <td th:text="${ingredient.getAmount()+' '+ingredient.getUnitOfMeasure().getDescription()}"></td>
+                </tr>
+            </table>
+        </td>
+        <td th:text="${recipe.getPrepTime()}"></td>
+        <td th:text="${recipe.getCookTime()}"></td>
+        <td th:text="${recipe.getDirections()}"></td>
+        <td th:text="${recipe.getNotes().getRecipeNotes()}"></td>
+    </tr>
+</table>
 </body>
 </html>
