@@ -71,12 +71,11 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     perfectGuacamole.setPrepTime(10);
     perfectGuacamole.setCookTime(0);
     perfectGuacamole.setServings(4);
-    perfectGuacamole.setIngredients(GetPerfectGuacamoleIngredients(perfectGuacamole));
+    addPerfectGuacamoleIngredients(perfectGuacamole);
     perfectGuacamole.setImage(GetPerfectGuacamoleImage());
     perfectGuacamole.setDirections(PERFECT_GUACAMOLE_DIRECTIONS);
     Notes perfectGuacamoleNotes = new Notes();
     perfectGuacamoleNotes.setRecipeNotes(PERFECT_GUACAMOLE_NOTES);
-    perfectGuacamoleNotes.setRecipe(perfectGuacamole);
     perfectGuacamole.setNotes(perfectGuacamoleNotes);
 
 
@@ -84,65 +83,64 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
   }
 
-  private Set<Ingredient> GetPerfectGuacamoleIngredients(Recipe perfectGuacamoleRecipe) {
-    HashSet<Ingredient> ingredients = new HashSet<>();
+  private void addPerfectGuacamoleIngredients(Recipe perfectGuacamoleRecipe) {
+
     Ingredient ripeAvocados = new Ingredient();
     ripeAvocados.setDescription("Ripe Avocados");
     ripeAvocados.setAmount(new BigDecimal(2));
     ripeAvocados.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Count").get());
     ripeAvocados.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(ripeAvocados);
+    perfectGuacamoleRecipe.addIngredient(ripeAvocados);
 
     Ingredient kosherSalt = new Ingredient();
     kosherSalt.setDescription("Kosher Salt");
     kosherSalt.setAmount(new BigDecimal(0.5));
     kosherSalt.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Teaspoon").get());
     kosherSalt.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(kosherSalt);
+    perfectGuacamoleRecipe.addIngredient(kosherSalt);
 
     Ingredient limeJuice = new Ingredient();
     limeJuice.setDescription("Lime Juice");
     limeJuice.setAmount(new BigDecimal(1));
     limeJuice.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
     limeJuice.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(limeJuice);
+    perfectGuacamoleRecipe.addIngredient(limeJuice);
 
     Ingredient mincedOnion = new Ingredient();
     mincedOnion.setDescription("Minced onions");
     mincedOnion.setAmount(new BigDecimal(2));
     mincedOnion.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
     mincedOnion.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(mincedOnion);
+    perfectGuacamoleRecipe.addIngredient(mincedOnion);
 
     Ingredient chiles = new Ingredient();
     chiles.setDescription("Chiles");
     chiles.setAmount(new BigDecimal(2));
     chiles.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Count").get());
     chiles.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(chiles);
+    perfectGuacamoleRecipe.addIngredient(chiles);
 
     Ingredient cilantro = new Ingredient();
     cilantro.setDescription("Cilantro");
     cilantro.setAmount(new BigDecimal(2));
     cilantro.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
     cilantro.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(cilantro);
+    perfectGuacamoleRecipe.addIngredient(cilantro);
 
     Ingredient blackPepper = new Ingredient();
     blackPepper.setDescription("Black pepper");
     blackPepper.setAmount(new BigDecimal(2));
     blackPepper.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Dash").get());
     blackPepper.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(cilantro);
+    perfectGuacamoleRecipe.addIngredient(cilantro);
 
     Ingredient tomato = new Ingredient();
     tomato.setDescription("Ripe tomato");
     tomato.setAmount(new BigDecimal(0.5));
     tomato.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Count").get());
     tomato.setRecipe(perfectGuacamoleRecipe);
-    ingredients.add(tomato);
+    perfectGuacamoleRecipe.addIngredient(tomato);
 
-    return ingredients;
   }
 
   private Byte[] GetPerfectGuacamoleImage() {
