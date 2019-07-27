@@ -46,7 +46,7 @@
                 <h5>Difficulty:</h5>
               </div>
               <div class="col-md-3">
-                <p th:text="${recipe.getDifficulty().name()}">Easy</p>
+                <p th:text="${recipe.getDifficulty()?.name()}">Easy</p>
               </div>
             </div>
             <div class="row">
