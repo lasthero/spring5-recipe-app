@@ -57,6 +57,24 @@ public class RecipeServiceImpl implements RecipeService {
 
   @Transactional
   @Override
+  public Boolean deleteById(Long id) {
+    try {
+      Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+      if (recipeOptional.isPresent()) {
+        recipeRepository.deleteById(id);
+      }
+      else {
+        throw new Exception("Recipe not found");
+      }
+      return true;
+    }
+    catch (Exception e) {
+      return false;
+    }
+  }
+
+  @Transactional
+  @Override
   public RecipeCommand findCommandById(Long id) {
     Recipe recipe = this.findById(id);
 

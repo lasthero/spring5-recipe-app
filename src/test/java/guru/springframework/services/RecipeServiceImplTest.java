@@ -18,6 +18,9 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -87,5 +90,22 @@ public class RecipeServiceImplTest {
     assertEquals(command.getId(), commandReturned.getId());
     verify(recipeRepository, times(1)).findById(anyLong());
     verify(recipeRepository, never()).findAll();
+  }
+
+  @Test
+  public void deleteByIDTest() {
+    Recipe recipe = new Recipe();
+    recipe.setId(1l);
+
+    doNothing().when(recipeRepository).deleteById(anyLong());
+    when(recipeRepository.findById(eq(1L))).thenReturn(Optional.of(recipe));
+    when(recipeRepository.findById(eq(0L))).thenReturn(Optional.empty());
+
+    Boolean deleteExistingId = recipeService.deleteById(1L);
+    Boolean deleteNonExistingId = recipeService.deleteById(0L);
+
+    assertEquals(true, deleteExistingId);
+    assertEquals(false, deleteNonExistingId);
+    verify(recipeRepository, times(2)).findById(anyLong());
   }
 }
