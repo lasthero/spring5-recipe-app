@@ -26,7 +26,9 @@
           <h1 class="card-title text-white">Ingredients</h1>
         </div>
         <div class="card-body">
-
+          <div class="row">
+            <a  class="btn btn-primary" role="button" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/new'}">New Ingredient</a>
+          </div>
           <div class="table-responsive" th:if="${not #lists.isEmpty(recipe.ingredients)}">
             <table class="table table-hover ">
               <thead class="thead-inverse">
@@ -54,7 +56,7 @@
               </tr>
               <tr th:each="ingredient : ${recipe.ingredients}">
                 <td th:text="${ingredient.id}">334</td>
-                <td th:text="${ingredient.amount} + ' ' + ${ingredient.getUnitOfMeasure().getDescription()} + ' ' + ${ingredient.description} + '/show'">Tasty Goodnees 3</td>
+                <td th:text="${ingredient.amount} + ' ' + ${ingredient.getUnitOfMeasure().getDescription()} + ' of ' + ${ingredient.description}">Tasty Goodnees 3</td>
                 <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/show'}">View</a></td>
                 <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/update'}">Update</a></td>
                 <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/delete'}">Delete</a></td>
