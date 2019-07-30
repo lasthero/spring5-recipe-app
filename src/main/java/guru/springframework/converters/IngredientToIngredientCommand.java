@@ -14,7 +14,7 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
   private UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
 
   @Autowired
-  public void IngredientToIngredientCommand(UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand) {
+  public IngredientToIngredientCommand(UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand) {
     this.unitOfMeasureToUnitOfMeasureCommand = unitOfMeasureToUnitOfMeasureCommand;
   }
   @Synchronized
@@ -26,6 +26,7 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
     }
     final IngredientCommand command = new IngredientCommand();
     command.setId(source.getId());
+    command.setRecipeId(source.getRecipe().getId());
     command.setAmount(source.getAmount());
     command.setDescription(source.getDescription());
     command.setUnitOfMeasure(unitOfMeasureToUnitOfMeasureCommand.convert(source.getUnitOfMeasure()));

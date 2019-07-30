@@ -81,23 +81,22 @@
       </div>
   </div>
   <div class="row">
-    <div class="card">
+    <div class="card col-lg-9">
       <div class="card-header bg-primary">
         <h1 class="card-title text-white" >Ingredients</h1>
+        <a class="text-white" href="#" th:href="@{'/recipe/' + ${recipe.getId()} + '/ingredients'}">View</a>
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-12">
             <ul  th:each="ingredient : ${recipe.getIngredients()}">
               <li th:text="${ingredient.getAmount()} + ' ' + ${ingredient.getUnitOfMeasure().getDescription()} +' of '+ ${ingredient.getDescription()}">1 Cup of milk</li>
             </ul>
-          </div>
         </div>
       </div>
     </div>
   </div>
     <div class="row">
-      <div class="card">
+      <div class="card col-lg-9">
         <div class="card-header bg-primary">
           <h1 class="card-title text-white" >Directions</h1>
         </div>
@@ -112,7 +111,7 @@
 
     </div>
     <div class="row">
-      <div class="card">
+      <div class="card col-lg-9">
         <div class="card-header bg-primary">
           <h1 class="card-title text-white" >Notes</h1>
         </div>
