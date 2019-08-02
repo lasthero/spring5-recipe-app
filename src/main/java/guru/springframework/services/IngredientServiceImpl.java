@@ -1,8 +1,10 @@
 package guru.springframework.services;
 
 import guru.springframework.commands.IngredientCommand;
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.IngredientCommandToIngredient;
 import guru.springframework.converters.IngredientToIngredientCommand;
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
@@ -11,10 +13,12 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 public class IngredientServiceImpl implements IngredientService {
+  private final RecipeToRecipeCommand recipeToRecipeCommand;
   private final IngredientToIngredientCommand ingredientToIngredientCommand;
   private final IngredientCommandToIngredient ingredientCommandToIngredient;
   private final RecipeRepository recipeRepository;
@@ -24,11 +28,13 @@ public class IngredientServiceImpl implements IngredientService {
   public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand,
       IngredientCommandToIngredient ingredientCommandToIngredient,
       RecipeRepository recipeRepository,
-      UnitOfMeasureRepository unitOfMeasureRepository) {
+      UnitOfMeasureRepository unitOfMeasureRepository,
+      RecipeToRecipeCommand recipeToRecipeCommand) {
     this.ingredientToIngredientCommand = ingredientToIngredientCommand;
     this.ingredientCommandToIngredient = ingredientCommandToIngredient;
     this.recipeRepository = recipeRepository;
     this.unitOfMeasureRepository = unitOfMeasureRepository;
+    this.recipeToRecipeCommand = recipeToRecipeCommand;
   }
 
   @Override
@@ -92,6 +98,33 @@ public class IngredientServiceImpl implements IngredientService {
       }
 
       return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+    }
+  }
+
+  @Transactional
+  @Override
+  public RecipeCommand deleteByRecipeIdAndId(Long recipeId, Long id) {
+    Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+    if (!recipeOptional.isPresent()) {
+      log.error("Recipe not found");
+      return new RecipeCommand();
+    }
+    else {
+      //find ingredient
+      Recipe recipe = recipeOptional.get();
+      Optional<Ingredient> ingredientOptional = recipe.getIngredients()
+          .stream()
+          .filter(ingredient -> ingredient.getId().equals(id))
+          .findFirst();
+      if (!ingredientOptional.isPresent()) {
+        log.error("Ingredient not found");
+        return new RecipeCommand();
+      }
+      else {
+        recipe.getIngredients().remove(ingredientOptional.get());
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        return recipeToRecipeCommand.convert(savedRecipe);
+      }
     }
   }
 }

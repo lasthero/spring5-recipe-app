@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
+import guru.springframework.domain.Recipe;
 import guru.springframework.services.IngredientService;
 import guru.springframework.services.RecipeService;
 import guru.springframework.services.UnitOfMeasureService;
@@ -94,5 +95,21 @@ public class IngredientControllerTest {
         .andExpect(model().attributeExists("ingredient"))
         .andExpect(model().attributeExists("uomList"));
     verify(recipeService, times(1)).findCommandById(anyLong());
+  }
+
+  @Test
+  public void deleteIngredientTest() throws Exception {
+
+    RecipeCommand recipeCommand = new RecipeCommand();
+    recipeCommand.setId(1L);
+    //when
+    when(ingredientService.deleteByRecipeIdAndId(anyLong(), anyLong())).thenReturn(recipeCommand);
+
+    //then
+    mockMvc.perform(get("/recipe/1/ingredient/1/delete"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("recipe/ingredient/list"))
+        .andExpect(model().attributeExists("recipe"));
+    verify(ingredientService, times(1)).deleteByRecipeIdAndId(anyLong(), anyLong());
   }
 }

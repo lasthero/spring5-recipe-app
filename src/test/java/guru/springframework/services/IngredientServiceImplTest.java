@@ -4,20 +4,29 @@ package guru.springframework.services;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import guru.springframework.commands.IngredientCommand;
+import guru.springframework.commands.RecipeCommand;
+import guru.springframework.converters.CategoryToCategoryCommand;
 import guru.springframework.converters.IngredientCommandToIngredient;
 import guru.springframework.converters.IngredientToIngredientCommand;
+import guru.springframework.converters.NotesToNotesCommand;
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
+import guru.springframework.domain.Category;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,6 +37,9 @@ public class IngredientServiceImplTest {
   IngredientService ingredientService;
   IngredientToIngredientCommand ingredientToIngredientCommand;
   IngredientCommandToIngredient ingredientCommandToIngredient;
+  RecipeToRecipeCommand recipeToRecipeCommand;
+  NotesToNotesCommand notesToNotesCommand;
+  CategoryToCategoryCommand categoryToCategoryCommand;
 
   @Mock
   RecipeRepository recipeRepository;
@@ -42,7 +54,10 @@ public class IngredientServiceImplTest {
     MockitoAnnotations.initMocks(this);
     ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
     ingredientCommandToIngredient = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
-    ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, ingredientCommandToIngredient, recipeRepository, unitOfMeasureRepository);
+    notesToNotesCommand = new NotesToNotesCommand();
+    categoryToCategoryCommand = new CategoryToCategoryCommand();
+    recipeToRecipeCommand = new RecipeToRecipeCommand(ingredientToIngredientCommand, notesToNotesCommand, categoryToCategoryCommand);
+    ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, ingredientCommandToIngredient, recipeRepository, unitOfMeasureRepository, recipeToRecipeCommand);
 
   }
 
@@ -99,4 +114,35 @@ public class IngredientServiceImplTest {
     verify(recipeRepository, times(1)).save(any(Recipe.class));
   }
 
+  @Test
+  public void deleteByRecipeIdAndIdTest() {
+    //given
+
+    AtomicReference<Long> id = new AtomicReference<>(1L);
+    Recipe recipe = new Recipe();
+    recipe.setId(1L);
+    Set<Category> categories = new HashSet<>();
+    Category category = new Category();
+    category.setId(1L);
+    categories.add(category);
+    recipe.setCategories(categories);
+    recipe.addIngredient(new Ingredient());
+    recipe.addIngredient(new Ingredient());
+    recipe.getIngredients().iterator().forEachRemaining(ingredient -> ingredient.setId(
+        id.getAndSet(id.get() + 1)));
+    Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+    //when
+    when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+    when(recipeRepository.save(any())).thenReturn(recipeOptional.get());
+
+    RecipeCommand recipeCommand = ingredientService.deleteByRecipeIdAndId(1L, 1L);
+
+    //then
+    assertEquals(1, recipeCommand.getIngredients().size());
+    assertEquals(Long.valueOf(2L), recipeCommand.getIngredients().iterator().next().getId());
+    verify(recipeRepository, times(1)).findById(anyLong());
+    verify(recipeRepository, times(1)).save(any());
+
+  }
 }

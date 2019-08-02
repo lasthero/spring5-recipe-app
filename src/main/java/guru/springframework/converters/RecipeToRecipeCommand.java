@@ -20,7 +20,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
   private CategoryToCategoryCommand categoryToCategoryCommand;
 
   @Autowired
-  public void RecipeCommandToRecipe(IngredientToIngredientCommand ingredientToIngredientCommand,
+  public RecipeToRecipeCommand(IngredientToIngredientCommand ingredientToIngredientCommand,
       NotesToNotesCommand notesToNotesCommand,
       CategoryToCategoryCommand categoryToCategoryCommand) {
    this.ingredientToIngredientCommand = ingredientToIngredientCommand;
