@@ -17,6 +17,8 @@ public class RecipeCommand {
   private Integer prepTime;
   private Integer cookTime;
   private Integer servings;
+  private Byte[] image;
+  private String base64Image;
   private String source;
   private String url;
   private String directions;

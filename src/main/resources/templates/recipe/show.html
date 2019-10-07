@@ -20,7 +20,7 @@
   <div class="card-group">
   <div class="row">
       <div class="card col-lg-9">
-        <img class="card-img" th:src="@{'data:image/jpeg;base64,'+${recipe.getBase64Image()}}" width="360px" height="360px" alt="Card image">
+        <img class="card-img" th:src="@{'/recipe/' + ${recipe.getId()} + '/recipeimage'}" width="360px" height="360px" alt="Card image">
         <div class="card-header  bg-primary">
           <h1 class="card-title text-white" th:text="${recipe.description}">Recipe Description Here!</h1>
         </div>

@@ -109,12 +109,8 @@ public class Recipe {
         this.directions = directions;
     }
 
-    public byte[] getImage() {
-        return ArrayUtils.toPrimitive(this.image);
-    }
-
-    public String getBase64Image() {
-        return Base64.encodeBase64String(this.getImage());
+    public Byte[] getImage() {
+        return this.image;
     }
 
     public void setImage(Byte[] image) {

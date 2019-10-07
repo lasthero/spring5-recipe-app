@@ -7,6 +7,8 @@ import guru.springframework.domain.Recipe;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Synchronized;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -46,6 +48,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
     recipe.setDescription(source.getDescription());
     recipe.setDifficulty(source.getDifficulty());
     recipe.setNotes(notesCommandToNotes.convert(source.getNotes()));
+    recipe.setImage(source.getImage());
 
     Set<Category> categories = new HashSet<>();
     source.getCategories().forEach( command -> categories.add(categoryCommandToCategory.convert(command)));

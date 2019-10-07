@@ -46,7 +46,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
     command.setDescription(source.getDescription());
     command.setDifficulty(source.getDifficulty());
     command.setNotes(notesToNotesCommand.convert(source.getNotes()));
-
+    command.setImage(source.getImage());
     Set<CategoryCommand> categoryCommands = new HashSet<>();
     source.getCategories().forEach( category -> categoryCommands.add(categoryToCategoryCommand.convert(category)));
     command.setCategories(categoryCommands);
