@@ -40,7 +40,7 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # run tests!
-      - run: mvn surefire:test cobertura:cobertura
+      - run: mvn integration-test cobertura:cobertura
 
       - store_artifacts:
           path: ./target/site/cobertura/coverage.xml
