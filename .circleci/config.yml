@@ -42,8 +42,8 @@ jobs:
       # run tests!
       - run: mvn test cobertura:cobertura
 
-      - store_test_results:
-          path: ./target/site/cobertura/coverage.xml
+      - store_artifacts:
+          path: /target/site/cobertura/coverage.xml
 
       - run:
           name: Send to CodeCov
