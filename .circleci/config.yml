@@ -43,7 +43,7 @@ jobs:
       - run: mvn test cobertura:cobertura
 
       - store_artifacts:
-          path: /target/site/cobertura/coverage.xml
+          path: ./target/site/cobertura/coverage.xml
 
       - run:
           name: Send to CodeCov
