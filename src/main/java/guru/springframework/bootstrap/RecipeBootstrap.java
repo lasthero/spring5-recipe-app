@@ -21,11 +21,13 @@ import javax.imageio.ImageIO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
+@Profile("default")
+public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
   private RecipeRepository recipeRepository;
   private CategoryRepository categoryRepository;
@@ -50,7 +52,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
       + "5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.\n";
   private final String CHICKEN_TACO_NOTES = "Look for ancho chile powder with the Mexican ingredients at your grocery store, or buy it online. (If you can't find ancho chili powder, you replace the ancho chili, the oregano, and the cumin with 2 1/2 tablespoons regular chili powder, though the flavor won't be quite the same.)";
   @Autowired
-  public DataLoader(RecipeRepository recipeRepository,
+  public RecipeBootstrap(RecipeRepository recipeRepository,
       CategoryRepository categoryRepository,
       UnitOfMeasureRepository unitOfMeasureRepository) {
     this.recipeRepository = recipeRepository;
